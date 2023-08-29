@@ -1,2 +1,25 @@
 # M.Sc.-in-Data-Analytics
-Final Portfolio Projects for each pre-requisite and required course.
+Final Portfolio Projects (final assignment) for each class from the Master in Science in Data Analytics program through Colorado State University.
+
+This repository contains the final Portfolio Projects for 3 pre-requisite, 8 requires, and 4 specializations classes
+
+Pre-Requisite
+1.   ITS320 - Basic Programming
+2.   MIS407 - Database Concepts
+3.   MIS445 - Statistics in Business Analytics
+
+Required
+1.  MIS500 - Foundations of Data Analytics
+2.  MIS510 - Data Mining and Visualization
+3.  MIS530 - Predictive Analytics
+4.  MIS540 - Introduction to Business Intelligence
+5.  MIS541 - Data Warehousing in Enterprise Environments
+6.  MIS542 - Business Analytics
+7.  MIS543 - Enterprise Performance Management
+8.  MIS581 - Capstone: Business Intelligence and Data Analytics
+
+Specialization in Organizational Leadership and Change Management
+1.  ORG515 - Leadership Power in Organizations
+2.  ORG521 - Organizational Change and Forecasting
+3.  ORG525 - Decision Theory in a Global Marketplace
+4.  ORG561 -  Examination of Modern Leadership
