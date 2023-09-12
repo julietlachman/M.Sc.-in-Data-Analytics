@@ -1,0 +1,370 @@
+# Final Portfolio Project for MIS510 - Data Mining and Visualization
+
+Datestamp Output
+Sys.time()
+## [1] "2020-02-09 20:29:31 MST"
+Introduction
+The purpose of this Portfolio Project is to demonstrate understanding of material covered in MIS510, Data Mining and Visualization. This Portfolio Project will explore the data set GermanCars.csv, run five functions, run Logistic Regression and Classification Trees, and analyze results. Included in this Portfolio Project are graphics to help visualize data and analysis.
+For this project, we are using GermanCredi.csv. It has 1000 records and 32 columns.
+I am interested in specific criteria that determines better credit worthiness. My assumption is that customers or candidates likely to be better candidates for credit or credit extension are customers who have been employed steadily, own their homes and cars, have dependents, and owned additional property.
+To better direct my portfolio project, I will assume that this data set was assigned to discover customers whose credit worthiness places them on a target marketing effort for cash advance or zero-percent, balance transfer offer. We will be using a time of year where travel plans will likely take place: Summer vacation plans being made in the Spring time.
+Explore Data
+Exploring data is the first step in working with data sets. Data needs to be verified and checked for being in reasonable condition. We check ranges, outliers, and missing values.
+# Explore Data
+library(arules)
+## Loading required package: Matrix
+## 
+## Attaching package: 'arules'
+## The following objects are masked from 'package:base':
+## 
+##     abbreviate, write
+gc.df <- read.csv("GermanCredit.csv")
+dim(gc.df$AGE)
+## NULL
+str(gc.df)
+## 'data.frame':    1000 obs. of  32 variables:
+##  $ OBS.            : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ CHK_ACCT        : int  0 1 3 0 0 3 3 1 3 1 ...
+##  $ DURATION        : int  6 48 12 42 24 36 24 36 12 30 ...
+##  $ HISTORY         : int  4 2 4 2 3 2 2 2 2 4 ...
+##  $ NEW_CAR         : int  0 0 0 0 1 0 0 0 0 1 ...
+##  $ USED_CAR        : int  0 0 0 0 0 0 0 1 0 0 ...
+##  $ FURNITURE       : int  0 0 0 1 0 0 1 0 0 0 ...
+##  $ RADIO.TV        : int  1 1 0 0 0 0 0 0 1 0 ...
+##  $ EDUCATION       : int  0 0 1 0 0 1 0 0 0 0 ...
+##  $ RETRAINING      : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ AMOUNT          : int  1169 5951 2096 7882 4870 9055 2835 6948 3059 5234 ...
+##  $ SAV_ACCT        : int  4 0 0 0 0 4 2 0 3 0 ...
+##  $ EMPLOYMENT      : int  4 2 3 3 2 2 4 2 3 0 ...
+##  $ INSTALL_RATE    : int  4 2 2 2 3 2 3 2 2 4 ...
+##  $ MALE_DIV        : int  0 0 0 0 0 0 0 0 1 0 ...
+##  $ MALE_SINGLE     : int  1 0 1 1 1 1 1 1 0 0 ...
+##  $ MALE_MAR_or_WID : int  0 0 0 0 0 0 0 0 0 1 ...
+##  $ CO.APPLICANT    : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ GUARANTOR       : int  0 0 0 1 0 0 0 0 0 0 ...
+##  $ PRESENT_RESIDENT: int  4 2 3 4 4 4 4 2 4 2 ...
+##  $ REAL_ESTATE     : int  1 1 1 0 0 0 0 0 1 0 ...
+##  $ PROP_UNKN_NONE  : int  0 0 0 0 1 1 0 0 0 0 ...
+##  $ AGE             : int  67 22 49 45 53 35 53 35 61 28 ...
+##  $ OTHER_INSTALL   : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ RENT            : int  0 0 0 0 0 0 0 1 0 0 ...
+##  $ OWN_RES         : int  1 1 1 0 0 0 1 0 1 1 ...
+##  $ NUM_CREDITS     : int  2 1 1 1 2 1 1 1 1 2 ...
+##  $ JOB             : int  2 2 1 2 2 1 2 3 1 3 ...
+##  $ NUM_DEPENDENTS  : int  1 1 2 2 2 2 1 1 1 1 ...
+##  $ TELEPHONE       : int  1 0 0 0 0 1 0 1 0 0 ...
+##  $ FOREIGN         : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ RESPONSE        : int  1 0 1 1 0 1 1 1 1 0 ...
+head(gc.df)
+##   OBS. CHK_ACCT DURATION HISTORY NEW_CAR USED_CAR FURNITURE RADIO.TV EDUCATION
+## 1    1        0        6       4       0        0         0        1         0
+## 2    2        1       48       2       0        0         0        1         0
+## 3    3        3       12       4       0        0         0        0         1
+## 4    4        0       42       2       0        0         1        0         0
+## 5    5        0       24       3       1        0         0        0         0
+## 6    6        3       36       2       0        0         0        0         1
+##   RETRAINING AMOUNT SAV_ACCT EMPLOYMENT INSTALL_RATE MALE_DIV MALE_SINGLE
+## 1          0   1169        4          4            4        0           1
+## 2          0   5951        0          2            2        0           0
+## 3          0   2096        0          3            2        0           1
+## 4          0   7882        0          3            2        0           1
+## 5          0   4870        0          2            3        0           1
+## 6          0   9055        4          2            2        0           1
+##   MALE_MAR_or_WID CO.APPLICANT GUARANTOR PRESENT_RESIDENT REAL_ESTATE
+## 1               0            0         0                4           1
+## 2               0            0         0                2           1
+## 3               0            0         0                3           1
+## 4               0            0         1                4           0
+## 5               0            0         0                4           0
+## 6               0            0         0                4           0
+##   PROP_UNKN_NONE AGE OTHER_INSTALL RENT OWN_RES NUM_CREDITS JOB NUM_DEPENDENTS
+## 1              0  67             0    0       1           2   2              1
+## 2              0  22             0    0       1           1   2              1
+## 3              0  49             0    0       1           1   1              2
+## 4              0  45             0    0       0           1   2              2
+## 5              1  53             0    0       0           2   2              2
+## 6              1  35             0    0       0           1   1              2
+##   TELEPHONE FOREIGN RESPONSE
+## 1         1       0        1
+## 2         0       0        0
+## 3         0       0        1
+## 4         0       0        1
+## 5         0       0        0
+## 6         1       0        1
+summary(gc.df)
+##       OBS.           CHK_ACCT        DURATION       HISTORY     
+##  Min.   :   1.0   Min.   :0.000   Min.   : 4.0   Min.   :0.000  
+##  1st Qu.: 250.8   1st Qu.:0.000   1st Qu.:12.0   1st Qu.:2.000  
+##  Median : 500.5   Median :1.000   Median :18.0   Median :2.000  
+##  Mean   : 500.5   Mean   :1.577   Mean   :20.9   Mean   :2.545  
+##  3rd Qu.: 750.2   3rd Qu.:3.000   3rd Qu.:24.0   3rd Qu.:4.000  
+##  Max.   :1000.0   Max.   :3.000   Max.   :72.0   Max.   :4.000  
+##     NEW_CAR         USED_CAR       FURNITURE        RADIO.TV      EDUCATION   
+##  Min.   :0.000   Min.   :0.000   Min.   :0.000   Min.   :0.00   Min.   :0.00  
+##  1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.00   1st Qu.:0.00  
+##  Median :0.000   Median :0.000   Median :0.000   Median :0.00   Median :0.00  
+##  Mean   :0.234   Mean   :0.103   Mean   :0.181   Mean   :0.28   Mean   :0.05  
+##  3rd Qu.:0.000   3rd Qu.:0.000   3rd Qu.:0.000   3rd Qu.:1.00   3rd Qu.:0.00  
+##  Max.   :1.000   Max.   :1.000   Max.   :1.000   Max.   :1.00   Max.   :1.00  
+##    RETRAINING        AMOUNT         SAV_ACCT       EMPLOYMENT   
+##  Min.   :0.000   Min.   :  250   Min.   :0.000   Min.   :0.000  
+##  1st Qu.:0.000   1st Qu.: 1366   1st Qu.:0.000   1st Qu.:2.000  
+##  Median :0.000   Median : 2320   Median :0.000   Median :2.000  
+##  Mean   :0.097   Mean   : 3271   Mean   :1.105   Mean   :2.384  
+##  3rd Qu.:0.000   3rd Qu.: 3972   3rd Qu.:2.000   3rd Qu.:4.000  
+##  Max.   :1.000   Max.   :18424   Max.   :4.000   Max.   :4.000  
+##   INSTALL_RATE      MALE_DIV     MALE_SINGLE    MALE_MAR_or_WID  CO.APPLICANT  
+##  Min.   :1.000   Min.   :0.00   Min.   :0.000   Min.   :0.000   Min.   :0.000  
+##  1st Qu.:2.000   1st Qu.:0.00   1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000  
+##  Median :3.000   Median :0.00   Median :1.000   Median :0.000   Median :0.000  
+##  Mean   :2.973   Mean   :0.05   Mean   :0.548   Mean   :0.092   Mean   :0.041  
+##  3rd Qu.:4.000   3rd Qu.:0.00   3rd Qu.:1.000   3rd Qu.:0.000   3rd Qu.:0.000  
+##  Max.   :4.000   Max.   :1.00   Max.   :1.000   Max.   :1.000   Max.   :1.000  
+##    GUARANTOR     PRESENT_RESIDENT  REAL_ESTATE    PROP_UNKN_NONE 
+##  Min.   :0.000   Min.   :1.000    Min.   :0.000   Min.   :0.000  
+##  1st Qu.:0.000   1st Qu.:2.000    1st Qu.:0.000   1st Qu.:0.000  
+##  Median :0.000   Median :3.000    Median :0.000   Median :0.000  
+##  Mean   :0.052   Mean   :2.845    Mean   :0.282   Mean   :0.154  
+##  3rd Qu.:0.000   3rd Qu.:4.000    3rd Qu.:1.000   3rd Qu.:0.000  
+##  Max.   :1.000   Max.   :4.000    Max.   :1.000   Max.   :1.000  
+##       AGE        OTHER_INSTALL        RENT          OWN_RES     
+##  Min.   :19.00   Min.   :0.000   Min.   :0.000   Min.   :0.000  
+##  1st Qu.:27.00   1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000  
+##  Median :33.00   Median :0.000   Median :0.000   Median :1.000  
+##  Mean   :35.55   Mean   :0.186   Mean   :0.179   Mean   :0.713  
+##  3rd Qu.:42.00   3rd Qu.:0.000   3rd Qu.:0.000   3rd Qu.:1.000  
+##  Max.   :75.00   Max.   :1.000   Max.   :1.000   Max.   :1.000  
+##   NUM_CREDITS         JOB        NUM_DEPENDENTS    TELEPHONE    
+##  Min.   :1.000   Min.   :0.000   Min.   :1.000   Min.   :0.000  
+##  1st Qu.:1.000   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:0.000  
+##  Median :1.000   Median :2.000   Median :1.000   Median :0.000  
+##  Mean   :1.407   Mean   :1.904   Mean   :1.155   Mean   :0.404  
+##  3rd Qu.:2.000   3rd Qu.:2.000   3rd Qu.:1.000   3rd Qu.:1.000  
+##  Max.   :4.000   Max.   :3.000   Max.   :2.000   Max.   :1.000  
+##     FOREIGN         RESPONSE  
+##  Min.   :0.000   Min.   :0.0  
+##  1st Qu.:0.000   1st Qu.:0.0  
+##  Median :0.000   Median :1.0  
+##  Mean   :0.037   Mean   :0.7  
+##  3rd Qu.:0.000   3rd Qu.:1.0  
+##  Max.   :1.000   Max.   :1.0
+mean(gc.df$AGE, na.ram = TRUE)
+## [1] 35.546
+boxplot(gc.df$AGE, xlab = "AGE")
+ 
+hist(gc.df$AGE, xlab = "AGE")
+ 
+View(gc.df)
+Graphics - Boxplots - (reference Chapter 3; Figure 3.3)
+One way to explore data is to view variables graphically. Boxplots can show a defined variable on teh y=axis. Below are 4 sets of boxplots that use AGE, AMOUNT, and DURATION to analyze both single males (MALE_SINGLE) and education (EDUCATION). At a glance, we can see that male homeowners are a narrow age range than female homeowners, but female homeowners may be higher credit balances. In another set of examples, educated customers appear to be employed longer and have been customers longer.
+# Graphics - Boxplots - (reference Chapter 3; Figure 3.3)
+## side-by-side boxplots
+# use par() to split the plots into panels.
+par(mfcol = c(1, 3))
+boxplot(gc.df$AGE ~ gc.df$EMPLOYMENT, xlab = "Employment", ylab = "Age of Customer")
+boxplot(gc.df$AMOUNT ~ gc.df$EMPLOYMENT, xlab = "Employment", ylab = "Balance")
+boxplot(gc.df$DURATION ~ gc.df$EMPLOYMENT, xlab = "Employment", ylab = "How Long Employed")
+ 
+par(mfcol = c(1, 3))
+boxplot(gc.df$AGE ~ gc.df$MALE_SINGLE, xlab = "1 = Single Male", ylab = "Age of Customer")
+boxplot(gc.df$AMOUNT ~ gc.df$MALE_SINGLE, xlab = "1 = Single Male", ylab = "Balance")
+boxplot(gc.df$DURATION ~ gc.df$MALE_SINGLE, xlab = "1 = Single Male", ylab = "How Long Employed")
+ 
+par(mfcol = c(1, 3))
+boxplot(gc.df$AGE ~ gc.df$EDUCATION, xlab = "Education", ylab = "Age of Customer")
+boxplot(gc.df$AMOUNT ~ gc.df$EDUCATION, xlab = "Education", ylab = "Balance")
+boxplot(gc.df$DURATION ~ gc.df$EDUCATION, xlab = "Education", ylab = "How Long Employed")
+ 
+par(mfcol = c(1, 3))
+boxplot(gc.df$AGE ~ gc.df$OWN_RES, xlab = "1 = Homeowner", ylab = "Age of Customer")
+boxplot(gc.df$AMOUNT ~ gc.df$OWN_RES, xlab = "1 = Homeowner", ylab = "Balance")
+boxplot(gc.df$DURATION ~ gc.df$OWN_RES, xlab = "1 = Homeowner", ylab = "How Long Employed")
+ 
+Run 5 Functions
+Computing mean, standard deviation, min, max, median, length, and missing values of number of dependents
+Computing averages can be very informative. In the computation below, the youngest and oldest customers on the data set are 19 and 75 respectively; average age is 35.546 and mean is 33.
+# Computing mean, standard deviation, min, max, median, length, and missing values of AGE
+mean(gc.df$AGE)
+## [1] 35.546
+sd(gc.df$AGE)
+## [1] 11.37547
+min(gc.df$AGE)
+## [1] 19
+max(gc.df$AGE)
+## [1] 75
+median(gc.df$AGE)
+## [1] 33
+Finding the number of missing values of the variable number of dependents
+If we suspect our data set might be missing values, we can check for one variable, as in the check for DURATION below, which return “0,” which tells us that there are no missing variables on any records for DURATION.
+# Finding the number of missing values of the variable DURATION
+sum(is.na(gc.df$DURATION))
+## [1] 0
+Finding mean, standard dev, min, max, median, length, and missing values for all variables
+To run averages for all variables and imputing missing values, we can use the following statement.
+#Finding mean, standard dev, min, max, median, length, and missing values for all variables
+data.frame(mean=sapply(gc.df, mean), 
+           sd=sapply(gc.df, sd), 
+           min=sapply(gc.df, min), 
+           max=sapply(gc.df, max), 
+           median=sapply(gc.df, median), 
+           length=sapply(gc.df, length),
+           miss.val=sapply(gc.df, function(x) 
+             sum(length(which(is.na(x))))))
+##                      mean           sd min   max median length miss.val
+## OBS.              500.500  288.8194361   1  1000  500.5   1000        0
+## CHK_ACCT            1.577    1.2576377   0     3    1.0   1000        0
+## DURATION           20.903   12.0588145   4    72   18.0   1000        0
+## HISTORY             2.545    1.0831196   0     4    2.0   1000        0
+## NEW_CAR             0.234    0.4235840   0     1    0.0   1000        0
+## USED_CAR            0.103    0.3041110   0     1    0.0   1000        0
+## FURNITURE           0.181    0.3852108   0     1    0.0   1000        0
+## RADIO.TV            0.280    0.4492236   0     1    0.0   1000        0
+## EDUCATION           0.050    0.2180540   0     1    0.0   1000        0
+## RETRAINING          0.097    0.2961059   0     1    0.0   1000        0
+## AMOUNT           3271.258 2822.7368760 250 18424 2319.5   1000        0
+## SAV_ACCT            1.105    1.5800226   0     4    0.0   1000        0
+## EMPLOYMENT          2.384    1.2083063   0     4    2.0   1000        0
+## INSTALL_RATE        2.973    1.1187147   1     4    3.0   1000        0
+## MALE_DIV            0.050    0.2180540   0     1    0.0   1000        0
+## MALE_SINGLE         0.548    0.4979397   0     1    1.0   1000        0
+## MALE_MAR_or_WID     0.092    0.2891706   0     1    0.0   1000        0
+## CO.APPLICANT        0.041    0.1983894   0     1    0.0   1000        0
+## GUARANTOR           0.052    0.2221381   0     1    0.0   1000        0
+## PRESENT_RESIDENT    2.845    1.1037179   1     4    3.0   1000        0
+## REAL_ESTATE         0.282    0.4501985   0     1    0.0   1000        0
+## PROP_UNKN_NONE      0.154    0.3611294   0     1    0.0   1000        0
+## AGE                35.546   11.3754686  19    75   33.0   1000        0
+## OTHER_INSTALL       0.186    0.3893014   0     1    0.0   1000        0
+## RENT                0.179    0.3835441   0     1    0.0   1000        0
+## OWN_RES             0.713    0.4525879   0     1    1.0   1000        0
+## NUM_CREDITS         1.407    0.5776545   1     4    1.0   1000        0
+## JOB                 1.904    0.6536140   0     3    2.0   1000        0
+## NUM_DEPENDENTS      1.155    0.3620858   1     2    1.0   1000        0
+## TELEPHONE           0.404    0.4909430   0     1    0.0   1000        0
+## FOREIGN             0.037    0.1888562   0     1    0.0   1000        0
+## RESPONSE            0.700    0.4584869   0     1    1.0   1000        0
+Logistic Regression (reference Chapter 10; Table 10.2)
+Logistic Regression modeling is used to predict the likelihood of a certain event. In this case, we want to analyze the data set and create a list of customers who will likely be good candidates a special offers marketing campaign. As an example, let us plan for a specific event: Spring. We want to market special cash advance or zero-interest balance transfer offers to families who are planning their summer vacations. We are going to analyze the entire data set, concentrating on married males (MALE_SINGLE = 0), who - have a checking account with us (CHK_ACCT) - have had a checking account with us for more than 12 months (DURATION) - have history (HISTORY) - have a car (NEW_CAR or USED_CAR) - have an education (EDUCATION = 1) - have a balance in their savings account (SAV_ACCT) - have a savings account with us (SAV_ACCT) - are employed (EMPLOYED) - currently reside locally (PRESENT_RESIDENT) - own their homes (OWN_RES) - have at least two credit cards (NUM_CREDITS) - have a job (JOB) and - have dependents (DEPENDENTS)
+# Logistic Regression (reference Chapter 10; Table 10.23)
+gc.df <- read.csv("GermanCredit.csv", header = TRUE)
+gc.df <- gc.df[ , -c(1, 5)]  
+# Drop ID and zip code columns.
+# treat Education as categorical (R will create dummy variables)
+gc.df$Education <- factor(gc.df$EDUCATION, levels = c(0, 1), 
+                            labels = c("Bachelors Degree", "Masters Degree"))
+
+# partition data
+set.seed(2)
+train.index <- sample(c(1:dim(gc.df)[1]), dim(gc.df)[1]*0.6)  
+train.df <- gc.df[train.index, ]
+valid.df <- gc.df[-train.index, ]
+
+# run logistic regression
+# use glm() (general linear model) with family = "binomial" to fit a logistic 
+# regression.
+logit.reg <- glm(OTHER_INSTALL ~ ., data = train.df, family = "binomial") 
+options(scipen=999)
+summary(logit.reg)
+## 
+## Call:
+## glm(formula = OTHER_INSTALL ~ ., family = "binomial", data = train.df)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.7220  -0.6552  -0.5215  -0.3617   2.4725  
+## 
+## Coefficients: (1 not defined because of singularities)
+##                            Estimate  Std. Error z value Pr(>|z|)    
+## (Intercept)             -1.60791884  1.04072895  -1.545 0.122348    
+## CHK_ACCT                 0.05334450  0.10205820   0.523 0.601192    
+## DURATION                 0.00684606  0.01246633   0.549 0.582893    
+## HISTORY                 -0.41864130  0.11957958  -3.501 0.000464 ***
+## USED_CAR                -0.50758528  0.46036810  -1.103 0.270217    
+## FURNITURE               -0.07952320  0.36739003  -0.216 0.828634    
+## RADIO.TV                -0.17265682  0.30696882  -0.562 0.573805    
+## EDUCATION               -0.00758925  0.56687213  -0.013 0.989318    
+## RETRAINING               0.63943916  0.36496502   1.752 0.079764 .  
+## AMOUNT                   0.00001374  0.00005804   0.237 0.812834    
+## SAV_ACCT                 0.01339345  0.07470536   0.179 0.857715    
+## EMPLOYMENT               0.04972922  0.10050330   0.495 0.620740    
+## INSTALL_RATE            -0.02892177  0.11508799  -0.251 0.801581    
+## MALE_DIV                -0.51189954  0.60765918  -0.842 0.399557    
+## MALE_SINGLE              0.27730852  0.28013704   0.990 0.322221    
+## MALE_MAR_or_WID          0.26584301  0.43126700   0.616 0.537615    
+## CO.APPLICANT             0.03984319  0.56219910   0.071 0.943501    
+## GUARANTOR                0.51538536  0.47493324   1.085 0.277844    
+## PRESENT_RESIDENT        -0.15005213  0.11717962  -1.281 0.200358    
+## REAL_ESTATE             -0.10765931  0.29028047  -0.371 0.710727    
+## PROP_UNKN_NONE           0.46947150  0.43261974   1.085 0.277841    
+## AGE                      0.01529418  0.01068604   1.431 0.152364    
+## RENT                    -0.44092295  0.56816799  -0.776 0.437723    
+## OWN_RES                  0.19590122  0.51468596   0.381 0.703483    
+## NUM_CREDITS              0.67198386  0.20683359   3.249 0.001158 ** 
+## JOB                     -0.00179538  0.19240531  -0.009 0.992555    
+## NUM_DEPENDENTS          -0.24826147  0.34057607  -0.729 0.466035    
+## TELEPHONE               -0.04949492  0.25934300  -0.191 0.848645    
+## FOREIGN                  0.09687191  0.54593308   0.177 0.859161    
+## RESPONSE                -0.37283695  0.27490253  -1.356 0.175019    
+## EducationMasters Degree          NA          NA      NA       NA    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 577.62  on 599  degrees of freedom
+## Residual deviance: 530.56  on 570  degrees of freedom
+## AIC: 590.56
+## 
+## Number of Fisher Scoring iterations: 5
+Classification Trees (reference Chapter 9; Figure 9.7)
+Two concepts are the basis for Classification Trees: Recursive Partitioning and Pruning.
+Recursive Partitioning creates a decision tree that should correctly categorize data in sub groups based on independent variables. For instance, we are trying to narrow down our data set into only those customers who we are initially assuming to be good candidates for a credit promotion. We are using independent variables like education and dependents.
+# Classification Trees (reference Chapter 9; Figure 9.7)
+library(rpart)
+library(rpart.plot)
+gc.df <- read.csv("GermanCredit.csv")
+
+# use rpart() to run a classification tree.
+# define rpart.control() in rpart() to determine the dept fo the tree.
+class.tree <- rpart(NUM_DEPENDENTS ~ ., data = gc.df,
+                    control = rpart.control(maxdepth = 5), method = "class")
+## plot tree
+# use prp() to plot the tree. You can control plotting parameters and information displayed (which and where).
+prp(class.tree, type = 1, extra = 1, split.font = 1, varlen = -10)
+ 
+class.tree <- rpart(EDUCATION ~ ., data = gc.df,
+                    control = rpart.control(maxdepth = 5), method = "class")
+## plot tree
+# use prp() to plot the tree. You can control plotting parameters and information displayed (which and where).
+prp(class.tree, type = 1, extra = 1, split.font = 1, varlen = -10)
+ 
+Graphics - Scatter plot - (reference Chapter 3; Figure 3.7)
+# Graphics - Scatter plot - (reference Chapter 3; Figure 3.7)
+## simple plot
+# use plot() to generate a matrix of 4X4 panels with variable name on the diagonal,
+# and scatter plots in teh remaining panels.
+plot(gc.df[, c(2, 3, 4, 23)])
+ 
+# alternative, nicer plot (diplayed)
+library (GGally)
+## Loading required package: ggplot2
+## Registered S3 method overwritten by 'GGally':
+##   method from   
+##   +.gg   ggplot2
+ggpairs(gc.df[, c(2, 3, 4, 23)])
+ 
+ 
+Process and Observations
+Process
+I opened R Studio and created a new RMarkdown file - for the downloaded data set, GermanCredit.csv - using the course number, type of assignment, and which option. I also added four more defining lines, more often used for final projects. For the output, I chose RMarkdown and deleted all information after lines 12.
+For my version of R Studio, I also changed
+“{r setup, include=FALSE}" "knitr::opts_chunk$set(echo = TRUE)" "”
+to
+“{r, echo=FALSE}" "knitr::opts_chunk$set(error = TRUE)" "”
+This change allows the Knit function to run properly.
+I created the following sections after the Datestamp: - Introduction - Explore Data - Graphics - Boxplots - Run 5 Functions - Finding the number of missing values of the variable number of dependents - Finding mean, standard dev, min, max, median, length, and missing values for all variables - Logistic Regression (reference Chapter 10; Table 10.2) - Classification Trees (reference Chapter 9; Figure 9.7) - Process and Observations
+I included a brief description for each section followed by R Studio code from previous assignments, updated with variable and values related to GermanCredit.csv.
+Observations
+Initially, when analyzing the data set, the assumption was that the data set was a random sample of customers to be used to vet a smaller list for a potential marketing campaign. The assumption included that this list contained a combination of customers with and without dependents, that most of the customers who had higher education level of Masters Degree would also have more in savings, that mostly families with dependents would be planning summer vacations, and those with higher savings accounts are likely to be older customers.
+In this dataset, however, all customers have dependents, and only 50 of the 1000 customers listed have a Master’s Degree; further, of the 40 customers on this list who have over €10,000 in their savings account, the youngest and oldest are 27 and 68 and all are still working.
+With just these two details, we will need to rethink our assumptions and remove previously considered criteria on who to target for our scenario of the special offer.
