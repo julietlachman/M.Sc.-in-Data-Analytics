@@ -1,3 +1,14 @@
 # Final Portfolio Project for MIS530 - Predictive Analytics
 
 # No code used in portfolio project
+
+Introduction 
+The purpose of this Portfolio Project for MIS530 - Predictive Analytics is to choose an industry and identify a data problem that can be solved using advanced predictive analytics.  A definition of the problem and its solution using predictive analytics will be presented, using CRISP-DM.  Each phase of this methodology described, from setting up, defining, and identifying to finally, deployment of solution.  
+
+Summary
+In this course, MIS530 - Predictive Analytics, we covered setting up, defining, and identifying problems and using CRISP-DM to methodologically mine data, understanding data and the preparation phases of data mining, descriptive data mining models, predictive modeling, advanced predictive models, predictive analytics, and multiple target prediction.  We also learned how to set up and use SAS Enterprise Miner for many of these topics.  Each week suggestions at the least, and applicable concepts at the most, to explore not only a project outline, but also focused direction, for my final project.  Closer to the end of the course, we learned about High-performance support vector machine model (HPSVM) and High-performance forest model node (HPFMN).  Each has pros and cons, and depending on size of data set, on how taxing for system performance, or how unique classes are, a comprehensive review of each would lead to which high performance model would be more ideal to use for specific business issue.  
+
+Conclusion
+For my business goal, initial review of orders showed that part numbers were not ideally formatted to reflect orders accurately.  Because of the non-standard formatting, the company may have been “eating the cost” of services that should have been passed to customer.  Tracking sales required tracking part number history and tracking part number history accurately meant altering part numbers to accurately reflect line item entries.  
+Following the CRISP-DM model to part number issue and pairing that initiative with SAS Enterprise Miner is a powerful combination to undertake the business goal that answers the question, “Do we need to change part numbers for order accuracy to reduce profit loss and increase profit by aggressively capturing Value-Added Services (VAS) charges?”  Analyzing this complex business issue can be broken down into as little as six steps of the CRISP-DM model.  The process requires thoughtful analysis and proposal of solutions to satisfy each step.  When the analysis of data is easily processed through SAS Enterprise Miner, the results can answer the initial question of “Where are we with our data?”  and address the final question of “What do we do now?”  The results can lead to questioning whether to create a project based on findings or to stop and close project with final steps of creating a report for future reference, should future effort be needed.  
+
