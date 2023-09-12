@@ -1,6 +1,6 @@
 # From Final Portfolio Project for ITS320 - Basic Programming
 
-# PRINT WORKING DIRECTORY
+## PRINT WORKING DIRECTORY
 import os
 os.chdir(os.path.dirname(__file__))
 print(os.getcwd())
