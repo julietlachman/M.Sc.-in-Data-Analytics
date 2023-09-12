@@ -1,0 +1,81 @@
+# From Final Portfolio Project for MIS407 - Database Concepts
+
+# SAS Code (PROC STATEMENTS are not in any particular order, variables may have changed)
+/*    format  SAS output   */ 
+options ls=78 formdlim='*'; 
+ods listing; 
+/*   linear regression   */ 
+/*   1. build model  */ 
+libname PERM '/folders/myfolders/MIS445/_xlsx'; 
+
+proc import  
+	datafile='/folders/myfolders/MIS445/_xlsx/MIS445_Module8_PPM_Option1.xlsx'  
+	dbms=xlsx out=PERM.MIS445_Module8_PPM_Option1 replace; 
+	GETNAMES=YES; 
+run; 
+
+proc datasets lib=PERM nolist; 
+	modify MIS445_Module8_PPM_Option1; 
+	label age='Age'; 
+	label marital='Marital Status'; 
+	label income='Income (Thousands)'; 
+	label ed='Level of Education'; 
+	label gender='Gender';
+ 	label address='Years at Current Residence'; 
+	label region='Region'; 
+	label custcat='Customer Category'; 
+	label churn='Discontinued Service'; 
+run; 
+
+proc reg rsquare DATA = PERM.MIS445_Module8_PPM_Option1; 
+	MODEL income = region age ed address gender custcat; 
+RUN ; 
+
+/*   2. model adequacy  */ 
+PROC GLM DATA = PERM.MIS445_Module8_PPM_Option1; 
+	CLASS address gender custcat; 
+	MODEL income = region age ed address gender custcat / SOLUTION CLPARM; 
+RUN; 
+	OUTPUT; 
+
+/*   3. model assumptions  */ 
+ODS GRAPHICS ON; 
+PROC GLM DATA = PERM.MIS445_Module8_PPM_Option1 PLOTS=all ; 
+	CLASS address gender custcat; 
+	MODEL income = region age ed address gender custcat/ P ; 
+	OUTPUT OUT = stat 
+	P=pred R=Residual RSTUDENT=r1 DFFITS=dffits 
+	COOKD=cookd H=hatvalue PRESS=res_del ; 
+RUN; 
+	ODS GRAPHICS OFF; 
+	 
+	 
+
+/*   #6 Multiple Linear Regression in SAS   */ 
+/*   CHURN   */ 
+PROC REG DATA=PERM.MIS445_Module8_PPM_Option1; 
+   /*   churn age gender address ed region marital custcat income   */ 
+	MODEL churn = age address; 
+	WHERE churn = 1; 
+	WHERE marital = 0; 
+	WHERE gender = 1; 
+	WHERE ed = 5; 
+	WHERE region = 2; 
+	WHERE custcat = 2; 
+	TITLE 'Multiple Linear Regression'; 
+RUN;
+
+/*   INCOME   */
+PROC REG DATA=PERM.MIS445_Module8_PPM_Option1; 
+   /*   churn age gender address ed region marital custcat income   */
+	MODEL income = age address; 
+	WHERE income = 1; 
+	WHERE marital = 0; 
+	WHERE gender = 1; 
+	WHERE ed = 5; 
+	WHERE region = 2; 
+	WHERE custcat = 4; 
+	TITLE 'Multiple Linear Regression'; 
+RUN; 
+
+
