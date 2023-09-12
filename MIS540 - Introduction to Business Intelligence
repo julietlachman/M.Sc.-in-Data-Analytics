@@ -1,3 +1,154 @@
 # Final Portfolio Project for MIS540 - Introduction to Business Intelligence
 
 # No code for portfolio project
+
+FUNCTIONAL REQUIREMENTS DOCUMENT
+1	GENERAL 
+1.1	Project Description
+1.1.1	Background
+What We Can We Do With Data:
+Revenue, Customer Churn, Marketing, and Customer Service
+If revenue from customer subscription is key to gross profit dollars, then minimizing customer churn is critical to not only immediately remaining in business, but to also better manage marketing efforts and customer support issues.  To inform and support all levels of the organization, a current illustration of the customer landscape is needed as a starting point for subsequent efforts.  From marketing efforts targeted to specific demographics to quickly filtering customers to the correct specialist, companies can minimize internal conflicts in managing current and potential customers for better retention.
+Reducing known patterns of profit leaks using Business Intelligence efforts, whose end goal is a single point of access to sensitive data will allow quick assembly from all known and relevant data warehouses the information needed to analyze real data quickly for smarter business decisions.  We will be gathering requirements for how new system will work, designing a user-friendly dashboards, and defining what is needed for a secure and scalable BI system with data and operational requirements.  
+Users will be defined early and access will be assigned according to roles within project.
+Tools and environments will be decided early so that integration with current environments can be completed while collaboration and communication system is built and tested.  Training on new system will be held while penultimate phase of quality testing occurs.  This will help company utilize internal employees as team trainers to their respective business group.  To minimize costs, we store data in the cloud and use formerly decommissioned servers as testing environments before moving to production for go-live.  
+The organization details on which this project will be based are the following:
+Global:  company has 1,000 offices worldwide with plans to expand to 2,000 more
+Website:  in 20 languages
+Product:  over 50,000 listed
+1.1.2	Purpose
+The purpose of this paper is to create BI (business intelligence) proposal based on Functional Requirements, whose outline is being used as a template for this Project Proposal.  We will be helping organization identify data collection and storage for reporting efforts to mitigate errors introduced into reports on which critical business decisions will be decided.
+1.1.3	Assumptions and Constraints
+Assumptions:  
+
+All roles for project are filled by company employees
+	
+	Equipment and software configured for project
+
+Constraints: 
+
+All roles will need specialized security clearance for project
+
+All servers for project are accessible only by roles with specialized clearance
+	
+	
+1.1.4	Interfaces to External Systems
+•	Owner of application:  Project Manager
+•	Details of interface:  No details available at this time
+1.2	Points of Contact
+•	Project manager
+•	Development project leader
+•	User contacts
+•	Company employee whose signature constitutes acceptance of the FRD
+•	Project participants
+1.3	Document References
+Meeting summaries, White paper analyses, System Development Life Cycle deliverables
+2	FUNCTIONAL REQUIREMENTS 
+2.1	Data Requirements
+The Integration Business Intelligence (IBI) project will be led by a Project Manager (PM) who will answer to the CEO and stakeholders.  The Project Manager will work with an assigned IBI specialist (IBIS) from each division to manage their division’s assignments on the upgrade to the new scalable and high-performance, integrated system.  The project will be done in four phases:
+1.	Preliminary Assessment
+a.	Assessment of current data, processes, and machines, and their respective resources
+b.	Requirements to replicate/collect data to one location to review and scrub
+c.	Delivering Project Timeline
+2.	Building, testing, working in Development environment
+3.	Building, testing, working in Quality environment 
+4.	Migrating Quality to Production for Go-live
+The immediate deliverables to stakeholders are:
+Current state of data
+Current practices for processing data
+Current machines and applications which store and process
+Secondary deliverable will be timelines based on proposals for data, processing and handling.
+All work will be on an interim BI machine set up, which will be installed with new framework and two environments - one for development and one for quality - DEV and QUAL respectively.  If integration on interim set-up passes testing, we will build the live, or production, environment - PROD - and use QUAL as the source.  
+Initially, only the PM and IBI division specialist (IBIDS) will have both local and global access to the servers during the development and testing stages of the project on DEV.  Access to the servers during the testing of quality on QUAL will be granted to four to six employees from each division, with one to four from each region, for testing before final push to PROD for go-live.  During testing on QUAL, new server for PROD will be configured with new framework, added to company network, and tested for compliance.  The server on which PROD will live will be scalable and high-performance build to accommodate high usage with regularly scheduled maintenance, upgrades, patches, replication and conversion jobs.  
+If testing on QUAL goes well, migration from QAUL to PROD will be scheduled during the known slowest time of the week.  Access for all employees with be updated to be single-sign-on protocol, whose grants are on roles and not individual email addresses or employee IDs, each employee belonging to a role with specific security parameters.  There will be no direct individual access or non-secure internal access.
+If the goal is to improve the data processing and handling systems, then the focus will be on the following:
+-	Current state of data and proposed storage, scrub, and naming convention standard
+-	Current performance of processes and proposed updated integration of processes
+-	Current data handling methodologies and proposed methodologies
+For data clean up, we will copy the data in each database from eight divisions into one location and being scrubbing, removing duplicates and reformatting to standard naming conventions.  Simultaneously, we will gather requirements from each division for what functionalities are necessary in the proposed single-solution framework.  In the requirements meetings we examine the processes used to better inform project leads of how data needs to be stored. 
+  Data must be clean and field format must be standardized.  Duplicate data will be deleted.  For data clean up, we will copy the data in each database from eight divisions into one location and being scrubbing, removing duplicates and reformatting to standard naming conventions.  Simultaneously, we will gather requirements from each division for what functionalities are necessary in the proposed single-solution framework.  In the requirements meetings we examine the processes used to better inform project leads of how data needs to be stored. 
+2.2	Functional Process Requirements
+BI environment will host all company data, but it is not the source database.  Updates to source will automatically update BI environment so that reports are using most current data.
+3	OPERATIONAL REQUIREMENTS
+3.1	Security
+All employees will be required to have updated security status based on their function with the organization.  
+Employees will no longer have direct access to intranet.  Employee access will be assigned to a (digital) role, through single sign-on, which will have a reactive enforced, security encryption protocol.  Level of access will depend on the role and what is determined to be functionally adequate for that role.  Role will be determined by employee title, according to HR records.  If there are extenuating circumstances where employee function is not aligned to role being assigned, an HR (Human Resources) representative from regional office will meet with director and employee to assess employee’s stated responsibilities against recent acted responsibilities.  This will result in either a reminder to managers and directors of direct reports limitation and immediate compliance to follow and enforce roles of organization or a modification of current job description for employee.  If employee has taken higher level tasks to help operations, modification or newly created job description are mandatory, due to role assignment for security access, and employee will be compensated accordingly.  
+Consequences for:
+•	Erasure of contamination of application data
+Manual backup from source database
+•	Disclosure of government secrets
+Prevention would be in education of government secrets, security clearance, and NDAs (Non Disclosure Agreements).  Disciplinary action including termination would be mandatory.
+Because integration and upgrades will be to one framework, accessible by all according to role and security parameters, few employees may have access to cross-functional disciplines within the company.  For instance, a Human Resources (HR) representative for Asia and Pacific (ASIAPAC) will have access to only HR records for ASIAPAC:  one set of records for one division.  By the same token, the general manger (GM) and their assistant for North America will have access to all North America data within all divisions of the company:  eight sets of records for all eight divisions.  
+Available to all employees will be email and chat access to anyone in the company, regardless of affiliation.  This is in compliance with the open-door policy with which each employee agrees upon accepting employment.
+Oversight of entire IBI Integration project is under articles of Corporate Governance and Security.  Corporate Governance and Security are the guidelines of rules and practices enforced by a Board of Directors to ensure fairness, accountability, and transparency between the company and the company’s stakeholders (investors, customers, managements, employees, government, community.)
+The goal of the IBI Project is to have an internal portal designed as follows in Figure 1, with the IT group overseeing all aspects of BI monitoring and maintenance.  
+Future portals to external entities can be discussed as needed.
+3.2	Audit Trail
+Audit trail includes date and time stamp of username, password, machine ID, IP address, and program.  Trail will also include network tunnel logging and keystrokes.
+3.3	Data Currency
+Data currency is within 12 hours.
+3.4	Reliability
+Reliability uses data recovery systems in place and will be set to 99%.  System failure can be partial loss of ability to perform mission-critical business functions, loss of revenue, loss of employee productivity, and loss of headcount.
+3.5	Recoverability
+Recoverability is the ability to restore function and data in the event of a failure. 
+•	In the event the application is unavailable to users (down) because of a system failure, how soon after the failure is detected must function be restored?  
+Within 4 hours
+•	In the event the database is corrupted, to what level of currency must it be restored?  
+No more than two hours before the corruption occurred.”
+•	If the process site (hardware, data, and onsite backup) is destroyed, how soon must the application be able to be restored?  
+Application will already by running disaster recovery box.
+3.6	System Availability
+System available 365/24/7
+3.7	Fault Tolerance
+•	Which functions need not be available at all times?
+All functions are needed to be available at all times.
+•	If a component fails what (if any) functions must the application continue to provide? What level of performance degradation is acceptable?
+All functions will be provided by application; no level of performance degradation is acceptable.  
+3.8	Performance
+Describe the requirements for the following:
+•	Response time for queries and updates
+> 00:01:00 response time
+•	Throughput
+500,000 million bits/second
+•	Expected volume of data
+5.0 zettabytes
+•	Expected volume of user activity (for example, number of transactions per hour, day, or month)
+1,000,000 transactions per week
+3.9	Capacity
+“The project volume is 1,000,000 queries per week.”
+3.10	Data Retention
+Data will be retained indefinitely, log file will be retained for 2 weeks.
+4	REQUIREMENTS TRACE ABILITY MATRIX
+REQUIREMENTS TRACEBILITY MATRIX - EXAMPLE
+Project Name	<Project Name here>	Created on	2019Nov15	Reviewed on	2019Dec01	 	 	 	 
+Release No	<Project Release>	Create By	<Creater's Name>	Reviewed by	<Reviewer's Name>	 	 	 	 
+Version	<Doc version>	 	 	 	 	 	 	 	 
+ 	 	 	 	 	 	 	 	 	 
+ 	 	 	 	 	 	 	 	 	 
+ID	Requirement ID	Requirement Description	Status	Design Document	Create Module	TestCase ID	TestCase Name	User Manual	Test on/Verification
+001	UC 1.0	Testing	Approved	DM-001	CM-001	TC-001	 	 	Awaiting Status
+002	UC 1.1	Testing	TBD	DM-002	CM-002	TC-002	 	 	Approved
+003	UC 1.3	Testing	Denied	DM-003	CM-003	TC-003	 	 	Denied
+004	UC 1.4	Testing	Awaiting Status	DM-004	CM-004	TC-004	 	 	Approved
+ 	 	 	 	 	 	 	 	 	 
+ 	 	 	 	 	 	 	 	 	 
+KEY	Awaiting Status								
+ 	Approved								
+ 	TBD								
+ 	Denied								
+
+
+5	GLOSSARY
+Audit Trail – activities related to session
+Capacity – maximum amount of data or number of processes that a system can handle; can be set to specific limits to allow for scratch space
+Contamination / Integrity – altered data which can affect building reliable reports
+Data Currency – measure of how recent data are
+Deliverable – results of project phases that will help manager / lead gauge progress
+Fault Tolerance – measure(s) in place that allows system to continue processing in the event of failure, usually part of disaster recovery effort
+Functional Process Requirements – describes what the application does
+Project Manager / Lead – individual responsible for organizing whole project, which will have many smaller tasks.
+Recoverability – ability to restore function and data in the event of a failure
+Reliability – probability that the system will be able to process work correctly and completely without being aborted
+System Availability – measurement of probability that system is available, running, and not undergoing repair
+
+
