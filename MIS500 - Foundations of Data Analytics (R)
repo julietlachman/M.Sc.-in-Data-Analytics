@@ -1,5 +1,6 @@
 # From Final Portfolio Project for MIS500 - Foundations of Data Analytics 
 
+
 # “R” Statement for Statistics and Graphs
 # Install packages
 package_df <- as.data.frame(installed.packages("/Library/Frameworks/R.framework/Versions/3.4/Resources/library"))
