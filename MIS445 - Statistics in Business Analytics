@@ -1,0 +1,239 @@
+# From Final Portfolio Project for MIS445 - Statistics in Business Analytics
+
+4.	Using PostgreSQL, develop and execute an SQL script file of DDL SQL to create the database tables in the metadata document.
+
+CREATE TABLE HSTRP
+(
+ID_TOOLS	varchar40)	NOT NULL,
+ID_CAT	varchar(40)	NOT NULL,
+ID_MFG	varchar(16)	NOT NULL,
+SN_MFG	varchar(16)	NOT NULL,
+SN_STORE	varchar(16)	NOT NULL,
+ID_SUPPLIER	varchar(16)	NOT NULL,
+ID_SUPPLEIR_CONTACT	var(10)	NOT NULL,
+ID_CUST	var(10)	NOT NULL
+);
+
+
+
+CREATE TABLE TOOLS
+(
+ID_TOOLS	varchar(3)	NOT NULL,
+tool_common_name	varchar(20)	NOT NULL,
+ID_MFG	varchar(20),
+ID_CAT	varchar(20),
+SN_MFG	varchar(20),
+SN_STORE	varchar(20),
+ID_SUPPLIER	varchar(3)
+;
+
+
+CREATE TABLE CATEGORY
+(
+ID_CAT	varchar(20)	NOT NULL,
+category_name_first	varchar(20)	NOT NULL,
+category_name_second	varchar(20),
+min_days	varchar(3),
+max_days	varchar(3)
+);
+
+
+CREATE TABLE MANUFACTURER
+(
+ID_MFG	varchar(20)	NOT NULL,
+mfg_name	varchar(20)	NOT NULL,
+mfg_parent_co	varchar(20)
+);
+
+
+CREATE TABLE MANUFACTURER_SERIAL_NUMBER
+(
+SN_MFG	varchar(20)	NOT NULL,
+mfg_name	varchar(20)	NOT NULL,
+mfg_parent_co	varchar(20)
+);
+
+
+CREATE TABLE STORE_SERIAL_NUMBER
+(
+SN_STORE	varchar(20)	NOT NULL,
+store_name	varchar(50)
+)
+
+
+CREATE TABLE SUPPLIER
+(
+ID_SUPPLIER	varchar(16)	NOT NULL,
+supplier_last_name	varchar(20),
+supplier_first_name	varchar(20),
+supplier_address1	varchar(50),
+supplier_address2	varchar(20),
+supplier_city	varchar(20),
+supplier_state	varchar(2),
+supplier_zip	varchar(10)
+supplier_phone_01	varchar(10),
+supplier_phone_02	varchar(10),
+ID_SUPPLIER_CONTACT	var(10)	NOT NULL
+);
+
+
+CREATE TABLE SUPPLIER_CONTACT
+(
+ID_SUPPLIER_CONTACT	var(10)	NOT NULL,
+supplier_contact_last_name	varchar(20)	NOT NULL,
+supplier_contact_first_name	varchar(20),
+supplier_contact_phone_01	varchar(10),
+supplier_contact_phone_02	varchar(10),
+supplier_contact_email	varchar(50)
+);
+
+
+CREATE TABLE CUSTOMER
+(
+ID_CUST	var(10)	NOT NULL,
+Customer_last_name	varchar(20)	NOT NULL,
+customer_first_name	varchar(20)	NOT NULL,
+customer_address1	varchar(50),
+customer_address2	varchar(20),
+customer_city	varchar(20),
+customer_state	varchar(2),
+customer_zip	varchar(10)
+customer_phone_01	varchar(10),
+customer_phone_02	varchar(10),
+customer_email	varchar(50)
+);
+
+
+CREATE TABLE RENTAL
+(
+ID_RENTAL	varchar(10)	NOT NULL,
+ID_CUST	varchar(10)	NOT NULL,
+SN_STORE	varchar(20)	NOT NULL,
+rental_out 	varchar(20),
+rental_in 	varchar(20),
+CONSTRAINT RENTAL_PK PRIMARY KEY(ID_RENTAL),
+FOREIGN KEY(ID_CUST) REFERENCES CUSTOMER(ID_CUST),
+FOREIGN KEY(SN_STORE) REFERENCES TOOLS(SN_STORE)
+);
+
+
+
+5.	Using your PostgreSQL, develop and execute an SQL script file of DML SQL INSERT statements to populate the tables using SQL INSERT statements for at least 5 rows of data per table.
+
+
+INSERT INTO TOOLS
+	(ID_TOOLS,tool_common_name,ID_MFG,ID_CAT,SN_MFG,SN_STORE,ID_SUPPLIER)
+VALUES
+	(001,'Lawn Mower','BOSCH_OD_001','OD_001','BOSCHLM0012019','STID_001','SUPP01'),
+	(101,'Allen Wrench 1/16','CRAFT_ID_101','ID_10','CRAFTSHT1012019','STID_002','SUPP02'),
+	(102,'Allen Wrench 1/8','CRAFT_ID_102','ID_11','CRAFTSHT1022019','STID_003','SUPP02'),
+	(103,'Allen Wrench 1/4','CRAFT_ID_103','ID_12','CRAFTSHT1032019','STID_004','SUPP02'),
+	(104,'Allen Wrench 1/2','CRAFT_ID_104','ID_13','CRAFTSHT1042019','STID_005','SUPP02');
+
+
+INSERT INTO CATEGORY
+	(ID_CAT,category_name_first,category_name_second,min_days,max_days)
+VALUES
+	('OD_1','outdoor','Lawn and Garden',0,3),
+	('OD_2','outdoor','Pool and Patio',0,3),
+	('OD_3','outdoor','Property Maintenance',0,3),
+	('OD_4','indoor','Plumbing',0,3),
+	('OD_5','indoor','Construction',0,3);
+
+
+INSERT INTO MANUFACTURER
+	(ID_MFG,mfg_name,mfg_parent_co)
+VALUES
+	('001_BOS','BOSCH',null),
+	('002_CRA','CRAFTSMAN',null),
+	('003_MAK','MAKITA',null),
+	('004_MIL','MILWAUKEE',null),
+	('005_STA','STANLEY',null);
+
+
+INSERT INTO MANUFACTURER_SERIAL_NUMBER
+	(SN_MFG,mfg_name,mfg_parent_co)
+VALUES
+	('CRAFTSHT1012019','CRAFTSMAN',null),
+	('CRAFTSHT1022019','CRAFTSMAN',null),
+	('CRAFTSHT1032019','CRAFTSMAN',null),
+	('CRAFTSHT1042019','CRAFTSMAN',null),
+	('CRAFTSHT1052019','CRAFTSMAN',null);
+
+
+INSERT INTO STORE_SERIAL_NUMBER
+	(SN_STORE,store_name),
+VALUES
+	('001','Corner Hardware');
+
+
+INSERT INTO SUPPLIER
+	(ID_SUPPLIER,supplier_name,supplier_address1,supplier_address2,supplier_city,supplier_state,supplier_zip,supplier_phone_01,supplier_phone_02,ID_SUPPLIER_CONTACT)
+VALUES
+	('SUPP_001','BOISE AND SONS','123 Main Street',null,'Big City','State','Zip','213-555-8584','818-555-1212','Joe Smith'),
+	('SUPP_002','THOMAS AND SONS','5454 E Jasper Lane,null','Big City','State','Zip','213-654-9874','302-654-3214','Mark Jones'),
+	('SUPP_003','CATALYST','59 S Street','55','Big City','State','Zip','818-231-5210','800-232-6444','Zinnia Bach'),
+	('SUPP_004','TERRA VERDE','2468 S Arbor Street','600','Big City','State','Zip','714-656-6363','714-656-6364','Anita Lee'),
+	('SUPP_005','BLUE WATER','7 Oceans Blvd',null,'Big City','State','Zip','818-246-7890','818-246-3210','Arielle David');
+
+
+INSERT INTO SUPPLIER_CONTACT
+	(ID_SUPPLIER_CONTACT,supplier_contact_last_name,supplier_contact_first_name,supplier_contact_phone_01,supplier_contact_phone_02,supplier_contact_email) 
+VALUES
+	('SUPP_001','Smith','Joe','213-555-8584','818-555-1212'),
+	('SUPP_002','Jones','Mark','213-654-9874','714-654-3214'),
+	('SUPP_003','Bach','Zinnia','818-231-5210','800-232-6444'),
+	('SUPP_004','Lee','Anita','714-656-6363','714-656-6364'),
+	('SUPP_005','David','Arielle','818-246-7890','818-246-3210');
+
+
+INSERT INTO CUSTOMER
+	(ID_CUST,customer_last_name,customer_first_name,customer_address1,customer_address2,customer_city,customer_state,customer_zip,customer_phone_01,customer_phone_02,customer_email,varchar) 
+VALUES
+	('00001','Smith','Dale','123 S Post Rd',null,'Town','State','Zip','213-662-9772','323-548-9754','dale.smith@gmail.com'),
+	('00002','Smith','Fred','3245 E Janes Run',null,'Town','State','Zip','213-665-9875',null,'frsmith@gmail.com'),
+	('00003','Smith','James','564 E Exposition Ave',null,'Town','State','Zip','213-384-65982',null,'grthmb@gmail.com'),
+	('00004','Smith','Glinda','6733 Kingsley St',null,'Town','State','Zip','213-469-8541','213-469-8500','glindas@gmail.com'),
+	('00005' 'Smith','Suzanne','922 Russell Rd','J-307','Town','State','Zip','650-879-9877','650-879-9110','suzsm@gmail.com');
+
+
+INSERT INTO RENTAL
+(ID_RENTAL,ID_CUST,SN_STORE,rental_out,rental_in,CONSTRAINT RENTAL_PK PRIMARY KEY(ID_RENTAL),FOREIGN KEY(ID_CUST) REFERENCES CUSTOMER(ID_CUST),
+FOREIGN KEY(SN_STORE) REFERENCES TOOLS(SN_STORE)
+VALUES
+(‘TR_000001’,’00001’,'STID_001’,’2019-07-01’,’2019-07-02’),
+(‘TR_000002’,’00002’,'STID_002',’2019-07-01’,’2019-07-04’),
+(‘TR_000003’,’00002’,'STID_003',’2019-06-25’,’’),
+(‘TR_000004’,’00003’,'STID_004',’2019-03-01’,’’),
+(‘TR_000005’,’00003’,'STID_005',’2019-07-01’,’2019-07-04’),
+);
+
+
+
+6.	Using PostgreSQL develop and execute an SQL script file to:
+a.	Show the contents of all tables.
+SELECT * FROM all_tables;
+b.	Retrieve all of the customers' names, account numbers, and addresses (street and zip code only), sorted by account number.
+SELECT ID_CUST,customer_last,customer_first,customer_address1,customer_zip
+FROM CUSTOMER
+ORDER BY ID-CUST;
+
+c.	Retrieve all of the tools rented in the last 30 days and sort in chronological rental date order.
+SELECT *
+FROM TOOLS, RENTAL
+WHERE TOOLS.ID_TOOLS AND TOOLS.SN_STORE = RENTAL.SN_STORE;
+
+SELECT t.tool_common_name, r.rental_out
+FROM TOOLS t, RENTAL r
+WHERE r.rental_out >= DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE())-30, 0)
+GROUP BY t.tool_common_name;
+
+d.	Update a customer name to change their maiden names to married names. You can choose which row to update.  Make sure that you use the primary key column in your WHERE clause to affect only a specific row.
+UPDATE ID_CUST
+SET customer_last_name = ‘Delancey’
+WHERE ID_CUST = ‘00004’;
+
+e.	Delete a specific customer from the database. You can choose which row to delete.  Make sure that you use the primary key column in your WHERE clause to affect only a specific row.
+DELETE 
+FROM Customer 
+WHERE ID_CUST = ‘00005’;
