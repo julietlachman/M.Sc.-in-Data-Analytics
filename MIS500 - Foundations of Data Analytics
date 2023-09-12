@@ -1,0 +1,359 @@
+# From Final Portfolio Project for MIS500 - Foundations of Data Analytics 
+
+# “R” Statement for Statistics and Graphs
+# Install packages
+package_df <- as.data.frame(installed.packages("/Library/Frameworks/R.framework/Versions/3.4/Resources/library"))
+package_list <- as.character(package_df$Package)
+install.packages(package_list)
+install.packages("tidyverse")
+install.packages("sqldf")
+install.packages("gsubfn")
+install.packages("proto")
+install.packages("RSQLite")
+install.packages("dplyr")
+install.packages("tseries")
+
+# Load R packages to read, write, and process data
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(sqldf)
+library(tseries)
+
+# Load customer data
+customers <- read_csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+customerssdf <- read_csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+customerssdf01 <- read_csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf_01.csv")
+
+# Read file will print 
+read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+
+# Convert Contract to numeric
+customers$tenure <- as.numeric(customers$tenure)
+glimpse(customers)
+
+# Summary of customers data
+summary(customers)
+mean(customers$Churn == "Yes" & customers$MonthlyCharges)*100
+mean(customers$Churn == "Yes" & customers$InternetService == "DSL")*100
+mean(customers$Churn == "Yes" & customers$InternetService == "Fiber optic")*100
+
+#SUMMARY
+customers <- read_csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+summary(customers)
+
+customerschurn <- read_csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+summary(customerschurn)
+
+# BEFORE CHURN
+# GENDER
+# GRAPHICS:  Create bar chart Men/Woman
+par(mfrow=c(2,2))
+gender = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(gender$gender)
+barplot(counts, main="Comparison of Accounts\nby Gender", xlab = "Gender", ylab = "Customers:  7043",
+names.arg=c("Men: 3488", "Women: 3555"))
+transform(as.data.frame(table(gender$gender == "Female")),percentage=Freq/nrow(gender)*100)
+
+# GENDER CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts for Men/Woman
+genderchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(genderchurn$gender)
+barplot(counts, main="Comparison of Closed Accounts\nby Gender", xlab = "Gender", ylab = "Customers:  1869",
+names.arg=c("Men: 930", "Women: 939"))
+transform(as.data.frame(table(genderchurn$gender == "Female")),percentage=Freq/nrow(genderchurn)*100)
+
+
+# SENIOR CITIZEN
+# GRAPHICS:  Create bar chart for Senior Citizens
+par(mfrow=c(2,2))
+senior = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(senior$SeniorCitizen)
+barplot(counts, main="Accounts for Seniors", xlab = "", ylab = "Customers:  7043",
+names.arg=c("Non-Seniors: 5901", "Seniors: 1142"))
+transform(as.data.frame(table(senior$SeniorCitizen == 1)),percentage=Freq/nrow(senior)*100)
+
+# SENIOR CITIZEN CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts for Senior Citizens
+par(mfrow=c(2,1))
+seniorchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(seniorchurn$SeniorCitizen)
+barplot(counts, main="Closed Accounts for Seniors", xlab = "", ylab = "Customers:  1869",
+names.arg=c("Non-Seniors: 1393", "Seniors: 476"))
+transform(as.data.frame(table(seniorchurn$SeniorCitizen == 1)),percentage=Freq/nrow(seniorchurn)*100)
+
+par(mfrow=c(2,2))
+seniorchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(seniorchurn$SeniorCitizen)
+barplot(counts, main="Closed Accounts for Seniors", xlab = "", ylab = "Customers:  1869",
+names.arg=c("Non-Seniors: 5901", "Seniors: 476"))
+transform(as.data.frame(table(seniorchurn$SeniorCitizen == 1)),percentage=Freq/nrow(seniorchurn)*100)
+
+
+# PARTNER
+# GRAPHICS:  Create bar chart for Accounts with Partners
+par(mfrow=c(2,2))
+partner = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(partner$Partner)
+barplot(counts, main="Accounts Of Customers\nwith or without Partners", xlab = "Partners", ylab = "Customers:  7043",
+names.arg=c("No: 3402", "Yes: 3641"))
+transform(as.data.frame(table(partner$Partner == "Yes")),percentage=Freq/nrow(partner)*100)
+
+# PARTNER CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+partnerchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(partnerchurn$Partner)
+barplot(counts, main="Closed Accounts Of Customers\nwith or without Partners", xlab = "Partners", ylab = "Customers:  1869",
+names.arg=c("No: 1200", "Yes: 669"))
+transform(as.data.frame(table(partnerchurn$Partner == "Yes")),percentage=Freq/nrow(partnerchurn)*100)
+
+
+# DEPENDENTS
+# GRAPHICS:  Create bar chart for Customer Accounts with Dependents
+par(mfrow=c(2,2))
+dependents = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(dependents$Dependents)
+barplot(counts, main="Customer Accounts\nwith or without Dependents", xlab = "Dependents", ylab = "Customers:  7043",
+names.arg=c("No: 4933", "Yes: 2110"))
+transform(as.data.frame(table(dependents$Dependents == "Yes")),percentage=Freq/nrow(dependents)*100)
+
+# DEPENDENTS CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+dependentschurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(dependentschurn$Dependents)
+barplot(counts, main="Closed Customer Accounts\nwith or without Dependents", xlab = "Dependents", ylab = "Customers:  1869",
+names.arg=c("No: 1543", "Yes: 326"))
+transform(as.data.frame(table(dependentschurn$Dependents == "Yes")),percentage=Freq/nrow(dependentschurn)*100)
+
+# PHONE SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Phone Service
+par(mfrow=c(2,2))
+phone_service = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(phone_service$PhoneService)
+barplot(counts, main="Customer Accounts with\nor without Phone Service", xlab = "Phone Service", ylab = "Customers:  7043",
+names.arg=c("No: 682", "Yes: 6361"))
+transform(as.data.frame(table(phone_service$PhoneService == "Yes")),percentage=Freq/nrow(phone_service)*100)
+
+# PHONE SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+phone_servicechurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(phone_servicechurn$PhoneService)
+barplot(counts, main="Closed Customer Accounts\nwith or without Phone Service", xlab = "Phone Service", ylab = "Customers:  1869",
+names.arg=c("No: 170", "Yes: 1699"))
+transform(as.data.frame(table(phone_servicechurn$PhoneService == "Yes")),percentage=Freq/nrow(phone_servicechurn)*100)
+
+
+# MULTIPLE LINES SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Multiple Lines Service
+par(mfrow=c(2,2))
+multiple_lines = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(multiple_lines$MultipleLines)
+barplot(counts, main="Customer Accounts with\nor without Multiple Lines Service", xlab = "Multiple Lines", ylab = "Customers:  7043",
+names.arg=c("No:\n3390", "No Phone\nService: 682", "Yes:\n2971"))
+transform(as.data.frame(table(multiple_lines$MultipleLines == "No phone service", multiple_lines$MultipleLines == "No", multiple_lines$MultipleLines == "Yes")),percentage=Freq/nrow(multiple_lines)*100)
+
+# MULTIPLE LINES SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+multiple_lineschurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(multiple_lineschurn$MultipleLines)
+barplot(counts, main="Closed Customer Accounts\nwith or without Multiple Lines Service", xlab = "Multiple Lines", ylab = "Customers:  1869",
+names.arg=c("No:\n849", "No Phone\nService: 170", "Yes:\n850"))
+transform(as.data.frame(table(multiple_lineschurn$MultipleLines == "No phone service", multiple_lineschurn$MultipleLines == "No", multiple_lineschurn$MultipleLines == "Yes")),percentage=Freq/nrow(multiple_lineschurn)*100)
+
+
+# INTERNET SERVICE SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Multiple Lines Service
+par(mfrow=c(4,4))
+internet_service = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(internet_service$InternetService)
+barplot(counts, main="Customer Accounts with\nor without Multiple Lines Service", xlab = "Internet Service", ylab = "Customers:  7043",
+names.arg=c("DSL:\n2421", "Fiber Optic:\n3096", "No:\n1526"))
+transform(as.data.frame(table(internet_service$InternetService == "DSL", internet_service$InternetService == "Fiber optic", internet_service$InternetService == "No")),percentage=Freq/nrow(internet_service)*100)
+
+# MULTIPLE LINES SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Multiple Lines Service
+par(mfrow=c(2,2))
+internet_servicechurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(internet_servicechurn$InternetService)
+barplot(counts, main="Closed Customer Accounts\nwith or without Multiple Lines Service", xlab = "Internet Service", ylab = "Customers:  1869",
+names.arg=c("DSL: \n429", "Fiber Optic:\n1297", "No:\n113"))
+transform(as.data.frame(table(internet_servicechurn$InternetService == "DSL", internet_servicechurn$InternetService == "Fiber optic", internet_servicechurn$InternetService == "No")),percentage=Freq/nrow(internet_servicechurn)*100)
+
+
+# ONLINE SECURITY SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Online Security Service
+par(mfrow=c(2,2))
+online_security = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(online_security$OnlineSecurity)
+barplot(counts, main="Customer Accounts with\nor without Online Security Service", xlab = "Online Security", ylab = "Customers:  7043",
+names.arg=c("No:\n3498", "No Online\nService: 1526", "Yes:\n2019"))
+transform(as.data.frame(table(online_security$OnlineSecurity == "No", online_security$OnlineSecurity == "No internet service", online_security$OnlineSecurity == "Yes")),percentage=Freq/nrow(online_security)*100)
+
+# ONLINE SECURITY SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+online_securitychurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(online_securitychurn$OnlineSecurity)
+barplot(counts, main="Closed Customer Accounts\nwith or without Online Security Service", xlab = "Online Security", ylab = "Customers:  1869",
+names.arg=c("No:\n1461", "No Online\nService: 113", "Yes:\n295"))
+transform(as.data.frame(table(online_securitychurn$OnlineSecurity == "No", online_securitychurn$OnlineSecurity == "No internet service", online_securitychurn$OnlineSecurity == "Yes")),percentage=Freq/nrow(online_securitychurn)*100)
+
+
+# ONLINE BACKUP SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Online Backup Service
+par(mfrow=c(2,2))
+online_backup = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(online_backup$OnlineBackup)
+barplot(counts, main="Customer Accounts with\nor without Online Backup Service", xlab = "Online Backup", ylab = "Customers:  7043",
+names.arg=c("No:\n3088", "No Online\nService: 1526", "Yes:\n2429"))
+transform(as.data.frame(table(online_backup$OnlineBackup == "No", online_backup$OnlineBackup == "No internet service", online_backup$OnlineBackup == "Yes")),percentage=Freq/nrow(online_backup)*100)
+
+# ONLINE BACKUP SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+online_backupchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(online_backupchurn$OnlineBackup)
+barplot(counts, main="Closed Customer Accounts\nwith or without Online Backup Service", xlab = "Online Backup", ylab = "Customers:  1869",
+names.arg=c("No:\n1233", "No Online\nService: 113", "Yes:\n529"))
+transform(as.data.frame(table(online_backupchurn$OnlineBackup == "No", online_backupchurn$OnlineBackup == "No internet service", online_backupchurn$OnlineBackup == "Yes")),percentage=Freq/nrow(online_backupchurn)*100)
+
+
+# DEVICE PROTECTION SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Device protection Service
+par(mfrow=c(2,2))
+device_protection = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(device_protection$DeviceProtection)
+barplot(counts, main="Customer Accounts with\nor without Device Protection Service", xlab = "Device Protection", ylab = "Customers:  7043",
+names.arg=c("No:\n3095", "No Online\nService: 1526", "Yes:\n2422"))
+transform(as.data.frame(table(device_protection$DeviceProtection == "No", device_protection$DeviceProtection == "No internet service", device_protection$DeviceProtection == "Yes")),percentage=Freq/nrow(device_protection)*100)
+
+# DEVICE PROTECTION SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+device_protectionchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(device_protectionchurn$DeviceProtection)
+barplot(counts, main="Closed Customer Accounts\nwith or without Device protection Service", xlab = "Device Protection", ylab = "Customers:  1869",
+names.arg=c("No:\n1211", "No Online\nService: 113", "Yes:\n545"))
+transform(as.data.frame(table(device_protectionchurn$DeviceProtection == "No", device_protectionchurn$DeviceProtection == "No internet service", device_protectionchurn$DeviceProtection == "Yes")),percentage=Freq/nrow(device_protectionchurn)*100)
+
+
+# TECH SUPPORT SERVICE
+# GRAPHICS:  Create bar chart for Customer Accounts with Tech support Service
+par(mfrow=c(2,2))
+tech_support = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(tech_support$TechSupport)
+barplot(counts, main="Customer Accounts with\nor without Tech Support Service", xlab = "Tech Support", ylab = "Customers:  7043",
+names.arg=c("No:\n3473", "No Online\nService: 1526", "Yes:\n244"))
+transform(as.data.frame(table(tech_support$TechSupport == "No", tech_support$TechSupport == "No internet service", tech_support$TechSupport == "Yes")),percentage=Freq/nrow(tech_support)*100)
+
+# TECH SUPPORT SERVICE CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+tech_supportchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(tech_supportchurn$TechSupport)
+barplot(counts, main="Closed Customer Accounts\nwith or without Tech support Service", xlab = "Tech Support", ylab = "Customers:  1869",
+names.arg=c("No:\n1446", "No Online\nService: 113", "Yes:\n310"))
+transform(as.data.frame(table(tech_supportchurn$TechSupport == "No", tech_supportchurn$TechSupport == "No internet service", tech_supportchurn$TechSupport == "Yes")),percentage=Freq/nrow(tech_supportchurn)*100)
+
+
+# STREAMING TV 
+# GRAPHICS:  Create bar chart for Customer Accounts with Streaming tv Service
+par(mfrow=c(2,2))
+streaming_tv = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(streaming_tv$StreamingTV)
+barplot(counts, main="Customer Accounts with\nor without Streaming tv Service", xlab = "Streaming TV", ylab = "Customers:  7043",
+names.arg=c("No:\n2810", "No Online\nService: 1526", "Yes:\n2707"))
+transform(as.data.frame(table(streaming_tv$StreamingTV == "No", streaming_tv$StreamingTV == "No internet service", streaming_tv$StreamingTV == "Yes")),percentage=Freq/nrow(streaming_tv)*100)
+
+# STREAMING TV CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+streaming_tvchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(streaming_tvchurn$StreamingTV)
+barplot(counts, main="Closed Customer Accounts\nwith or without Streaming tv Service", xlab = "Streaming TV", ylab = "Customers:  1869",
+names.arg=c("No:\n942", "No Online\nService: 113", "Yes:\n814"))
+transform(as.data.frame(table(streaming_tvchurn$StreamingTV == "No", streaming_tvchurn$StreamingTV == "No internet service", streaming_tvchurn$StreamingTV == "Yes")),percentage=Freq/nrow(streaming_tvchurn)*100)
+
+
+# STREAMING MOVIES 
+# GRAPHICS:  Create bar chart for Customer Accounts with Streaming movies Service
+par(mfrow=c(2,2))
+streaming_movies = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(streaming_movies$StreamingMovies)
+barplot(counts, main="Customer Accounts with\nor without Streaming Movies", xlab = "Streaming Movies", ylab = "Customers:  7043",
+names.arg=c("No:\n2785", "No Online\nService: 1526", "Yes:\n2732"))
+transform(as.data.frame(table(streaming_movies$StreamingMovies == "No", streaming_movies$StreamingMovies == "No internet service", streaming_movies$StreamingMovies == "Yes")),percentage=Freq/nrow(streaming_movies)*100)
+
+
+# STREAMING MOVIES CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+streaming_movieschurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(streaming_movieschurn$StreamingMovies)
+barplot(counts, main="Closed Customer Accounts\nwith or without Streaming Movies", xlab = "Streaming Movies", ylab = "Customers:  1869",
+names.arg=c("No:\n938", "No Online\nService: 113", "Yes:\n818"))
+transform(as.data.frame(table(streaming_movieschurn$StreamingMovies == "No", streaming_movieschurn$StreamingMovies == "No internet service", streaming_movieschurn$StreamingMovies == "Yes")),percentage=Freq/nrow(streaming_movieschurn)*100)
+
+
+# CONTRACT 
+# GRAPHICS:  Create bar chart for Customer Accounts with Contract Service
+par(mfrow=c(2,2))
+contract = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(contract$Contract)
+barplot(counts, main="Contract Types\non all Customer Accounts", xlab = "Contracts", ylab = "Customers:  7043",
+names.arg=c("Monthly:\n3875", "One Year:\n1473", "Two Year:\n1695"))
+transform(as.data.frame(table(contract$Contract == "Month-to-month", contract$Contract == "One year", contract$Contract == "Two year")),percentage=Freq/nrow(contract)*100)
+
+# CONTRACT CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+contractchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(contractchurn$Contract)
+barplot(counts, main="Contract Types on\nClosed Customer Accounts", xlab = "Contracts", ylab = "Customers:  1869",
+names.arg=c("Montly:\n1655", "One Year:\n166", "Two Year:\n48"))
+transform(as.data.frame(table(contractchurn$Contract == "Month-to-month", contractchurn$Contract == "One year", contractchurn$Contract == "Two year")),percentage=Freq/nrow(contractchurn)*100)
+
+
+# PAPERLESSBILLING
+# GRAPHICS:  Create bar chart for Customer Accounts with Paperless Billing
+par(mfrow=c(2,2))
+paperlessbilling = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(paperlessbilling$PaperlessBilling)
+barplot(counts, main="Customer Accounts\nwith or without Paperlessbilling", xlab = "Paperless Billing", ylab = "Customers:  7043",
+names.arg=c("No: 2872", "Yes: 4171"))
+transform(as.data.frame(table(paperlessbilling$PaperlessBilling == "Yes")),percentage=Freq/nrow(paperlessbilling)*100)
+
+# PAPERLESSBILLING CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Partners
+par(mfrow=c(2,2))
+paperlessbillingchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(paperlessbillingchurn$PaperlessBilling)
+barplot(counts, main="Closed Customer Accounts\nwith or without Paperless Billing", xlab = "Paperless Billing", ylab = "Customers:  1869",
+names.arg=c("No: 469", "Yes: 1400"))
+transform(as.data.frame(table(paperlessbillingchurn$PaperlessBilling == "Yes")),percentage=Freq/nrow(paperlessbillingchurn)*100)
+
+
+# PAYMENT 
+# GRAPHICS:  Create bar chart for Customer Accounts with Payment Method
+par(mfrow=c(1,1))
+payment = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1.csv")
+counts <- table(payment$PaymentMethod)
+barplot(counts, main="Customer Accounts with\nor without Payment Method", xlab = "Payment Method", ylab = "Customers:  7043", 
+names.arg=c("Bank transfer\n(automatic): 1544", "Credit card\n(automatic): 1522", "Electronic check:\n2365", "Mailed Check:\n1612"))
+transform(as.data.frame(table(payment$PaymentMethod == "Bank transfer (automatic)", payment$PaymentMethod == "Credit card (automatic)", payment$PaymentMethod == "Electronic check", payment$PaymentMethod == "Mailed check")),percentage=Freq/nrow(payment)*100)
+
+
+# PAYMENT CHURN
+# GRAPHICS:  Create bar chart for Closed Accounts with Payment Method
+par(mfrow=c(1,1))
+paymentchurn = read.csv("/Users/Administrator/Downloads/MIS500M8PPOpt1sdf.csv")
+counts <- table(paymentchurn$PaymentMethod)
+barplot(counts, main="Closed Customer Accounts\nwith or without Payment Method", xlab = "Payment Method", ylab = "Customers:  1869",
+names.arg=c("Bank transfer\n(automatic): 258", "Credit card\n(automatic): 232", "Electronic check:\n1071", "Mailed Check:\n308"))
+transform(as.data.frame(table(paymentchurn$PaymentMethod == "Bank transfer (automatic)", paymentchurn$PaymentMethod == "Credit card (automatic)", paymentchurn$PaymentMethod == "Electronic check", paymentchurn$PaymentMethod == "Mailed check")),percentage=Freq/nrow(paymentchurn)*100)
+
