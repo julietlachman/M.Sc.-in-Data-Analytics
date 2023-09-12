@@ -1,7 +1,7 @@
 # M.Sc.-in-Data-Analytics
 Final Portfolio Projects (final assignment) for each class from the Master in Science in Data Analytics program through Colorado State University.
 
-This repository contains the final Portfolio Projects for 3 pre-requisite, 8 required, and 4 specializations classes.
+This repository contains the final Portfolio Projects for Pre-Requisite and Required classes, listed below (3 pre-requisite, 8 required).
 
 Pre-Requisite
 1.   ITS320 - Basic Programming
