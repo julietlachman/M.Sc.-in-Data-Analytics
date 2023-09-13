@@ -1,5 +1,7 @@
 # From Final Portfolio Project for MIS445 - Statistics in Business Analytics
 
+# SQL
+
 #4.	Using PostgreSQL, develop and execute an SQL script file of DDL SQL to create the database tables in the metadata document.
 
 CREATE TABLE HSTRP
